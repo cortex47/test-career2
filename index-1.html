@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Какие профессии будущего могут тебе подойти?</title>
+  <style>
+    :root{
+      --bg:#f5f7fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280;
+      --accent:#6d5dfc; --accent-2:#8b5cf6; --yes:#0f766e; --no:#b45309;
+      --line:#e5e7eb; --shadow:0 12px 40px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#f7f8ff 0%,var(--bg) 100%);color:var(--text)}
+    .wrap{max-width:760px;margin:0 auto;padding:24px 16px 40px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}
+    h1{font-size:clamp(28px,5vw,44px);line-height:1.05;margin:0 0 12px}
+    h2{font-size:clamp(24px,4vw,34px);margin:0 0 10px}
+    p{line-height:1.6;color:var(--muted)}
+    .lead{font-size:18px;margin-top:0}
+    .pill{display:inline-block;padding:7px 11px;border-radius:999px;background:#efecff;color:#4c3fd3;font-weight:700;font-size:13px;margin-bottom:14px}
+    .progress{height:10px;background:#eceef5;border-radius:999px;overflow:hidden;margin:22px 0 8px}
+    .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .25s ease}
+    .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+    .question{font-size:25px;line-height:1.35;font-weight:800;margin:30px 0}
+    .answers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    button{border:0;border-radius:18px;padding:18px 20px;font-size:18px;font-weight:800;cursor:pointer;transition:.15s transform,.15s box-shadow,.15s background}
+    button:hover{transform:translateY(-1px)}
+    .yes{background:#e7f7f3;color:var(--yes)}
+    .no{background:#fff3e8;color:var(--no)}
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;width:100%;box-shadow:0 8px 24px rgba(109,93,252,.25)}
+    .secondary{background:#f3f4f6;color:#374151;width:100%;margin-top:12px}
+    .hidden{display:none}
+    .result-main{padding:18px;border:1px solid #e9e7ff;background:#faf9ff;border-radius:20px;margin:20px 0}
+    .result-main strong{color:#4c3fd3}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+    .mini{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fff}
+    .mini h3{margin:0 0 8px;font-size:17px}
+    .score{font-size:28px;font-weight:900;color:#4c3fd3}
+    ul{padding-left:20px;color:#4b5563;line-height:1.6}
+    .profession-list{display:grid;gap:16px;margin-top:14px}
+    .profession{border:1px solid var(--line);border-radius:20px;padding:18px;background:#fff}
+    .profession-top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+    .profession h4{font-size:20px;margin:0 0 4px}
+    .match{white-space:nowrap;background:#efecff;color:#4c3fd3;border-radius:999px;padding:7px 10px;font-weight:850;font-size:13px}
+    .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+    .metric{background:#f8fafc;border-radius:12px;padding:10px 12px;font-size:13px;color:#475569}
+    .metric strong{display:block;color:#1f2937;margin-bottom:3px}
+    .meter{height:8px;background:#edf0f5;border-radius:999px;overflow:hidden;margin-top:6px}
+    .meter > span{height:100%;display:block;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px}
+    .tag{display:inline-block;padding:5px 8px;border-radius:999px;font-size:12px;font-weight:800;margin:2px 4px 2px 0}
+    .tag.good{background:#ecfdf5;color:#047857}.tag.mid{background:#fff7ed;color:#b45309}.tag.risk{background:#fef2f2;color:#b91c1c}
+    .profession p{margin:8px 0}.small{font-size:13px}.sources{font-size:12px;color:#64748b;border-top:1px solid var(--line);margin-top:24px;padding-top:16px}.sources a{color:#4c3fd3}
+    .note{font-size:14px;background:#f8fafc;border-radius:16px;padding:14px 16px;margin-top:18px;color:#64748b}
+    .footer{font-size:12px;color:#94a3b8;text-align:center;margin-top:16px}
+    @media(max-width:600px){.card{padding:22px 18px}.answers,.grid,.metrics{grid-template-columns:1fr}.question{font-size:22px}.profession-top{display:block}.match{display:inline-block;margin-top:6px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" id="startScreen">
+      <span class="pill">Мини-тест · 10 вопросов</span>
+      <h1>Какие профессии будущего могут тебе подойти?</h1>
+      <p class="lead">Тест показывает, какие способы мышления тебе ближе, а после ответов предложит профессии и объяснит, как ИИ может изменить каждую из них: где он станет помощником, где повысит конкуренцию, а где автоматизирует значительную часть рутинной работы.</p>
+      <p>Отвечай быстро и честно. Здесь нет правильных или неправильных ответов.</p>
+      <button class="primary" id="startBtn">Начать тест</button>
+    </section>
+
+    <section class="card hidden" id="quizScreen">
+      <div class="meta"><span id="stepText">Вопрос 1 из 10</span><span>Да / Нет</span></div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="question" id="questionText"></div>
+      <div class="answers">
+        <button class="yes" data-answer="yes">Да</button>
+        <button class="no" data-answer="no">Нет</button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="resultScreen">
+      <span class="pill">Результат</span>
+      <h2 id="resultTitle"></h2>
+      <div class="result-main" id="resultSummary"></div>
+      <div class="grid" id="scoresGrid"></div>
+      <h3>Профессии, которые сейчас выглядят наиболее подходящими</h3>
+      <p class="small">Совпадение — это ориентир по ответам, а не вероятность успеха. Прогноз рынка особенно надёжен на ближайшие годы; на горизонте 10–15 лет неопределённость намного выше.</p>
+      <div class="profession-list" id="professionList"></div>
+      <h3>Что можно попробовать уже сейчас</h3>
+      <ul id="tryList"></ul>
+      <h3>План экспериментов на ближайший месяц</h3>
+      <ol id="monthPlan"></ol>
+      <div class="note"><strong>Как читать оценку ИИ.</strong> Высокое влияние ИИ не означает, что профессия исчезнет. Иногда наоборот: сильный специалист с хорошей фундаментальной базой и умением использовать ИИ становится продуктивнее и ценнее. Наибольший риск обычно там, где работа состоит преимущественно из повторяемых цифровых операций.</div>
+      <div class="sources">Основа прогноза: World Economic Forum, <em>Future of Jobs Report 2025</em>; OECD, <em>AI and skills: What we know so far</em> (2026); ILO, <em>Generative AI and Jobs: a 2025 update</em>.<br><a href="https://www.weforum.org/stories/2025/01/future-of-jobs-report-2025-the-fastest-growing-and-declining-jobs/" target="_blank" rel="noopener">WEF</a> · <a href="https://www.oecd.org/en/publications/ai-and-skills_f843b352-en.html" target="_blank" rel="noopener">OECD</a> · <a href="https://researchrepository.ilo.org/esploro/outputs/encyclopediaEntry/995653520102676" target="_blank" rel="noopener">ILO</a></div>
+      <button class="secondary" id="restartBtn">Пройти ещё раз</button>
+    </section>
+    <div class="footer">Небольшой ориентир для выбора направлений развития, а не профессиональная диагностика.</div>
+  </main>
+
+<script>
+const questions = [
+  {
+    text: "Тебе нравится разбираться, почему устройство, программа или механизм работает именно так?",
+    yes:{tech:2, analysis:1}, no:{people:1, creative:1}
+  },
+  {
+    text: "Если задача сложная, тебе интересно раскладывать её на маленькие части и искать решение шаг за шагом?",
+    yes:{analysis:2, tech:1}, no:{creative:1, people:1}
+  },
+  {
+    text: "Тебе нравится придумывать истории, оформление, идеи, рисунки, видео или необычные способы что-то показать?",
+    yes:{creative:2, people:1}, no:{analysis:1, tech:1}
+  },
+  {
+    text: "Тебе интересно объяснять другим людям то, что ты сама уже поняла?",
+    yes:{people:2, leadership:1}, no:{analysis:1}
+  },
+  {
+    text: "Тебе было бы интересно проводить опыты, наблюдать за природой, организмами или окружающей средой?",
+    yes:{science:2, analysis:1}, no:{tech:1, creative:1}
+  },
+  {
+    text: "Тебе нравится собирать что-то из деталей, конструкторов или делать вещи руками по своему замыслу?",
+    yes:{tech:2, creative:1}, no:{people:1, analysis:1}
+  },
+  {
+    text: "Когда в группе никто не знает, что делать дальше, тебе хочется предложить план и распределить задачи?",
+    yes:{leadership:2, people:1}, no:{creative:1, analysis:1}
+  },
+  {
+    text: "Тебе интересно искать закономерности в числах, таблицах, фактах или сравнивать разные варианты?",
+    yes:{analysis:2, tech:1}, no:{creative:1, people:1}
+  },
+  {
+    text: "Тебе нравится узнавать, почему люди поступают по-разному и что они чувствуют?",
+    yes:{people:2, creative:1}, no:{tech:1, analysis:1}
+  },
+  {
+    text: "Ты бы скорее выбрала проект, где нужно создать что-то новое, чем просто повторить готовый образец?",
+    yes:{creative:2, leadership:1, tech:1}, no:{analysis:1, science:1}
+  }
+];
+
+const labels = {
+  tech:"Техника и инженерия",
+  analysis:"Аналитика и IT",
+  creative:"Творчество и дизайн",
+  people:"Люди и коммуникации",
+  science:"Наука и природа",
+  leadership:"Организация и управление"
+};
+
+const descriptions = {
+  tech:{
+    title:"Инженерный склад мышления",
+    text:"Тебе, вероятно, интересно понимать устройство вещей, собирать, улучшать и находить технические решения.",
+    careers:["инженерия и робототехника","электроника и автоматизация","архитектура технических систем","промышленный дизайн","разработка устройств и умной техники"],
+    try:["робототехника или Arduino","3D-моделирование","конструкторские проекты","простые проекты с электроникой"]
+  },
+  analysis:{
+    title:"Аналитический склад мышления",
+    text:"Тебе подходят задачи, где нужно искать закономерности, разбираться в сложных системах и принимать решения на основе фактов.",
+    careers:["программирование и разработка ПО","искусственный интеллект и анализ данных","кибербезопасность","системная аналитика","финансовая и бизнес-аналитика"],
+    try:["Python или Scratch","логические задачи","олимпиадная математика без давления","небольшие проекты с данными"]
+  },
+  creative:{
+    title:"Творческий склад мышления",
+    text:"Тебе может быть особенно интересно создавать новое, работать с образами, идеями, стилем и нестандартной подачей.",
+    careers:["графический и продуктовый дизайн","UX/UI-дизайн","анимация и 3D","архитектура","медиа, контент и креативные индустрии"],
+    try:["рисование или цифровая иллюстрация","монтаж видео","3D-графика","создание собственного небольшого проекта или блога"]
+  },
+  people:{
+    title:"Гуманитарно-коммуникационный склад мышления",
+    text:"Тебе могут подходить направления, где важно понимать людей, объяснять, договариваться, поддерживать и работать с идеями и смыслами.",
+    careers:["психология","образование","журналистика и коммуникации","HR и развитие команд","право и общественные науки"],
+    try:["дебаты или школьные проекты","волонтёрство","ведение интервью","написание текстов и выступления"]
+  },
+  science:{
+    title:"Исследовательский склад мышления",
+    text:"Тебе может быть интересно наблюдать, проверять гипотезы и понимать, как устроены природа, организм и окружающий мир.",
+    careers:["биотехнологии","медицина и медицинские технологии","экология","химия и материаловедение","научные исследования"],
+    try:["домашние безопасные научные опыты","биология или химия углублённо","наблюдательные проекты","научно-популярные кружки"]
+  },
+  leadership:{
+    title:"Организаторский склад мышления",
+    text:"Тебе может нравиться превращать идеи в результат: планировать, собирать людей вокруг задачи и принимать решения.",
+    careers:["предпринимательство","продуктовый менеджмент","управление проектами","организация мероприятий","управление командами и бизнесом"],
+    try:["организовать маленький проект","планировать семейное или школьное мероприятие","участвовать в командных конкурсах","придумать мини-проект и довести его до результата"]
+  }
+};
+
+
+const professions = [
+  {name:"Инженер по робототехнике и мехатронике",w:{tech:.48,analysis:.20,science:.20,creative:.08,leadership:.04},aiImpact:"Высокое",resilience:9,outlook:"Высокая",contraction:"Низкий",market:"Автоматизация и роботизация сами создают спрос на специалистов, соединяющих механику, электронику и ПО.",ai:"ИИ ускорит проектирование, симуляцию и программирование, но физическая интеграция, безопасность и архитектурные решения останутся сложными.",competitive:"Очень хорошая, если сочетать математику, физику, электронику, программирование и AI-инструменты.",learn:"Математика → физика → Python/C++ → электроника → CAD/3D → робототехника → AI."},
+  {name:"Инженер по кибербезопасности",w:{analysis:.46,tech:.38,leadership:.08,science:.05,creative:.03},aiImpact:"Очень высокое",resilience:9,outlook:"Очень высокая",contraction:"Низкий",market:"WEF относит сети и кибербезопасность к навыкам с быстро растущим спросом.",ai:"ИИ автоматизирует поиск типовых проблем и анализ логов, но одновременно создаёт новые классы атак и повышает ценность глубокой технической экспертизы.",competitive:"Высокая, особенно у специалистов, которые понимают системы ниже уровня готовых инструментов.",learn:"Linux → сети → Python → программирование → ОС → безопасность приложений/облаков → AI для анализа."},
+  {name:"Специалист по ИИ и машинному обучению",w:{analysis:.50,tech:.22,science:.16,creative:.06,leadership:.06},aiImpact:"Очень высокое",resilience:9,outlook:"Очень высокая",contraction:"Низкий",market:"AI/ML specialists входят у WEF в число самых быстрорастущих профессий до 2030 года.",ai:"ИИ здесь не конкурент, а основной рабочий инструмент. Рутинное построение моделей упрощается, но растёт значение математики, данных, оценки качества и предметной области.",competitive:"Очень высокая при сильной математической базе; простого умения пользоваться чат-ботом будет недостаточно.",learn:"Математика → вероятность и статистика → Python → алгоритмы → данные → ML → нейросети."},
+  {name:"Инженер энергетики и автоматизации",w:{tech:.42,science:.31,analysis:.20,leadership:.07},aiImpact:"Среднее",resilience:9,outlook:"Высокая",contraction:"Низкий",market:"Энергетический переход, накопители и автоматизация увеличивают спрос на инженерные компетенции.",ai:"ИИ будет помогать в прогнозировании, диагностике и оптимизации, но ответственность за реальные инфраструктурные системы останется у инженеров.",competitive:"Высокая при сочетании электротехники, автоматизации, программирования и анализа данных.",learn:"Физика → математика → электротехника → автоматика → embedded/PLC → данные и AI."},
+  {name:"Биоинформатик / вычислительный биолог",w:{science:.43,analysis:.34,tech:.13,creative:.06,leadership:.04},aiImpact:"Очень высокое",resilience:8,outlook:"Высокая",contraction:"Низкий",market:"Сочетание биологии, данных и вычислений делает особенно ценными междисциплинарные навыки.",ai:"ИИ ускоряет анализ геномных и медицинских данных, но нужен человек, понимающий биологический смысл результатов и качество данных.",competitive:"Высокая при сильной биологии плюс статистика и программирование.",learn:"Биология → химия → статистика → Python/R → генетика → анализ данных → ML."},
+  {name:"Инженер медицинских технологий",w:{science:.36,tech:.31,analysis:.20,people:.08,creative:.05},aiImpact:"Высокое",resilience:9,outlook:"Высокая",contraction:"Низкий",market:"Медицинские устройства и цифровая медицина требуют сочетания инженерии, данных и понимания человека.",ai:"ИИ возьмёт часть анализа и диагностики, но разработка, испытания, безопасность и внедрение медицинских систем останутся сложными.",competitive:"Высокая у специалистов на пересечении инженерии, биологии и программирования.",learn:"Физика → биология → электроника → программирование → обработка сигналов → AI."},
+  {name:"Data Scientist / специалист по данным",w:{analysis:.50,science:.17,tech:.16,leadership:.10,creative:.07},aiImpact:"Очень высокое",resilience:8,outlook:"Очень высокая",contraction:"Низкий–средний",market:"Big data specialists — одна из самых быстрорастущих групп профессий по прогнозу WEF.",ai:"ИИ автоматизирует простые отчёты и модели. Ценность смещается к постановке вопросов, качеству данных, экспериментам и интерпретации.",competitive:"Высокая, если понимать статистику, данные и предметную область, а не только управлять инструментом.",learn:"Математика → статистика → Python/SQL → визуализация → эксперименты → ML."},
+  {name:"Разработчик программных систем",w:{analysis:.44,tech:.34,creative:.10,leadership:.07,science:.05},aiImpact:"Очень высокое",resilience:7,outlook:"Высокая, но профессия меняется",contraction:"Средний для простых junior-задач",market:"Разработка ПО сохраняет значимость, но ИИ резко повышает производительность и планку входа.",ai:"Типовой код, шаблонные сайты и простые исправления будут всё чаще выполнять AI-агенты. Ценность останется в архитектуре, сложной отладке и системном мышлении.",competitive:"Высокая для сильного инженера; низкая для человека, умеющего только генерировать типовой код.",learn:"Алгоритмы → один язык глубоко → структуры данных → ОС/сети/БД → архитектура → AI-assisted development."},
+  {name:"Системный / технический архитектор",w:{analysis:.35,tech:.35,leadership:.18,people:.07,creative:.05},aiImpact:"Высокое",resilience:9,outlook:"Высокая",contraction:"Низкий",market:"Чем сложнее цифровые системы, тем важнее специалисты, способные видеть связи между компонентами и ограничениями.",ai:"ИИ поможет проектировать варианты, но выбор компромиссов, ответственность, интеграция и понимание реального контекста остаются задачами высокого уровня.",competitive:"Очень высокая после накопления глубокой инженерной базы.",learn:"Программирование → ОС/сети/БД → распределённые системы → безопасность → архитектура → управление."},
+  {name:"UX / продуктовый дизайнер",w:{creative:.42,people:.24,analysis:.16,tech:.10,leadership:.08},aiImpact:"Очень высокое",resilience:6,outlook:"Средняя–высокая",contraction:"Средний",market:"Простое производство макетов ускоряется, но понимание пользователя и продуктовых ограничений остаётся ценным.",ai:"Генерация вариантов интерфейса и графики будет сильно автоматизирована. Ценность смещается от «рисовать экраны» к исследованию и продуктовой логике.",competitive:"Хорошая, если дизайнер понимает людей, продукт, аналитику и умеет направлять AI-инструменты.",learn:"Композиция → Figma → UX-исследования → психология восприятия → аналитика → AI-прототипирование."},
+  {name:"Промышленный дизайнер",w:{creative:.36,tech:.30,analysis:.12,people:.08,science:.08,leadership:.06},aiImpact:"Высокое",resilience:7,outlook:"Средняя–высокая",contraction:"Низкий–средний",market:"Физические продукты требуют сочетания эстетики, эргономики, производства и инженерных ограничений.",ai:"ИИ быстро создаёт концепты, но реальный продукт должен быть удобным, технологичным, ремонтопригодным и производимым.",competitive:"Высокая при сочетании дизайна, CAD, материалов и понимания производства.",learn:"Рисунок → 3D/CAD → материалы → эргономика → прототипирование → производство → AI-концептинг."},
+  {name:"Архитектор зданий и пространств",w:{creative:.38,tech:.22,analysis:.14,people:.08,science:.10,leadership:.08},aiImpact:"Высокое",resilience:7,outlook:"Средняя",contraction:"Низкий–средний",market:"ИИ ускорит визуализацию и черновое проектирование, но физические, нормативные и человеческие ограничения сохраняют роль специалиста.",ai:"Рендеры и варианты планировок будут генерироваться автоматически; ценность переместится в концепцию и инженерную согласованность.",competitive:"Хорошая у архитектора с сильной инженерной и цифровой подготовкой.",learn:"Рисунок → геометрия → CAD/BIM → конструкции → климат/энергоэффективность → AI."},
+  {name:"Научный исследователь",w:{science:.48,analysis:.29,creative:.14,tech:.05,leadership:.04},aiImpact:"Очень высокое",resilience:8,outlook:"Высокая в сильных областях",contraction:"Низкий",market:"ИИ ускоряет поиск закономерностей и обработку данных, но постановка вопроса и проверка гипотез становятся ещё важнее.",ai:"Модели могут предлагать гипотезы и анализировать массивы данных, но достоверность, эксперимент и научная ответственность требуют специалиста.",competitive:"Высокая при сильной фундаментальной базе и владении вычислительными методами.",learn:"Математика → выбранная естественная наука → статистика → программирование → эксперименты → AI-инструменты."},
+  {name:"Психолог / специалист по развитию человека",w:{people:.52,science:.18,analysis:.10,creative:.08,leadership:.12},aiImpact:"Среднее–высокое",resilience:8,outlook:"Высокая",contraction:"Низкий",market:"ИИ может взять часть информационной работы, но доверие, сложный человеческий контекст и ответственность трудно свести к автоматизации.",ai:"Чат-боты займут простые консультационные сценарии; ценность человека останется в сложной работе и профессиональном суждении.",competitive:"Высокая при профессиональном образовании, этике и специализации; использование ИИ станет дополнительным навыком.",learn:"Биология → психология → статистика → коммуникация → исследовательские методы → цифровые инструменты."},
+  {name:"Преподаватель / дизайнер образовательных программ",w:{people:.40,creative:.20,leadership:.17,analysis:.13,science:.06,tech:.04},aiImpact:"Очень высокое",resilience:7,outlook:"Средняя–высокая",contraction:"Средний для передачи типовой информации",market:"ИИ снижает ценность простого пересказа материала, но усиливает потребность в наставниках, которые умеют строить обучение и давать обратную связь.",ai:"Объяснения и упражнения легко генерируются. Человеческая ценность — диагностика понимания, мотивация и проектное обучение.",competitive:"Хорошая у преподавателя, который использует ИИ и умеет строить индивидуальные траектории.",learn:"Глубокий предмет → педагогика → психология → публичная речь → цифровые платформы → AI в обучении."},
+  {name:"Продуктовый менеджер / предприниматель",w:{leadership:.42,people:.23,analysis:.20,creative:.10,tech:.05},aiImpact:"Очень высокое",resilience:8,outlook:"Высокая",contraction:"Низкий–средний",market:"ИИ снижает стоимость создания прототипов и анализа информации, поэтому ценнее становится умение находить реальные проблемы и доводить решение до рынка.",ai:"ИИ будет делать исследования, тексты, аналитику и прототипы быстрее, но выбор направления, ответственность за результат и работа с людьми останутся.",competitive:"Очень высокая у человека, который понимает технологии, экономику и людей, а не только координирует задачи.",learn:"Коммуникация → экономика → аналитика → технологии → управление проектами → эксперименты → AI."},
+  {name:"Юрист в сложных технологических областях",w:{people:.26,analysis:.34,leadership:.20,creative:.08,tech:.07,science:.05},aiImpact:"Очень высокое",resilience:6,outlook:"Средняя",contraction:"Средний",market:"Рутинный поиск документов и подготовка типовых текстов автоматизируются, но сложные споры, регулирование технологий и ответственность сохраняют спрос.",ai:"AI хорошо работает с текстами и поиском, поэтому junior-рутина будет сокращаться. Специализация в технологиях и сложных переговорах повышает устойчивость.",competitive:"Хорошая при узкой специализации, сильном мышлении и умении проверять AI, а не слепо доверять ему.",learn:"Логика → право → письмо → переговоры → экономика/технологии → работа с AI и проверка источников."},
+  {name:"Медиа-продюсер / специалист по цифровому контенту",w:{creative:.46,people:.24,leadership:.12,analysis:.10,tech:.08},aiImpact:"Очень высокое",resilience:4,outlook:"Неопределённая",contraction:"Высокий для типового контента",market:"Генерация текстов, изображений и видео стремительно дешевеет, поэтому обычное производство контента становится более конкурентным.",ai:"ИИ сможет выполнять значительную часть типовых задач. Устойчивость выше у тех, кто создаёт сильные идеи, владеет аудиторией, режиссурой, стратегией и уникальной экспертизой.",competitive:"Возможна, но потребуется заметно более высокий уровень оригинальности и предпринимательского мышления.",learn:"Сторителлинг → визуальная культура → монтаж → маркетинг → аналитика аудитории → AI-production."}
+];
+
+function professionFit(p){
+  const max=Math.max(...Object.values(scores),1); let raw=0, weight=0;
+  Object.entries(p.w).forEach(([k,w])=>{raw+=((scores[k]||0)/max)*w;weight+=w});
+  return Math.round(55+(raw/weight)*44);
+}
+function riskClass(v){if(v.includes("Высок"))return"risk";if(v.includes("Сред")||v.includes("Неоп"))return"mid";return"good"}
+function outlookClass(v){if(v.includes("Сред")||v.includes("Неоп"))return"mid";return"good"}
+
+let current = 0;
+let scores = {tech:0,analysis:0,creative:0,people:0,science:0,leadership:0};
+
+const startScreen = document.getElementById('startScreen');
+const quizScreen = document.getElementById('quizScreen');
+const resultScreen = document.getElementById('resultScreen');
+const qText = document.getElementById('questionText');
+const stepText = document.getElementById('stepText');
+const bar = document.getElementById('bar');
+
+function showQuestion(){
+  const q = questions[current];
+  qText.textContent = q.text;
+  stepText.textContent = `Вопрос ${current+1} из ${questions.length}`;
+  bar.style.width = `${(current/questions.length)*100}%`;
+}
+
+function applyPoints(map){
+  Object.entries(map).forEach(([k,v]) => scores[k] += v);
+}
+
+function finish(){
+  bar.style.width = '100%';
+  quizScreen.classList.add('hidden');
+  resultScreen.classList.remove('hidden');
+
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const [topKey, topScore] = sorted[0];
+  const secondKey = sorted[1][0];
+  const top = descriptions[topKey];
+
+  document.getElementById('resultTitle').textContent = top.title;
+  document.getElementById('resultSummary').innerHTML = `
+    <p><strong>Главное направление:</strong> ${labels[topKey]}</p>
+    <p>${top.text}</p>
+    <p><strong>Дополнительная сильная сторона:</strong> ${labels[secondKey]}.</p>
+    <p><strong>Стратегия на будущее:</strong> не искать профессию «без ИИ», а выбирать область, где можно стать сильным специалистом и использовать ИИ как усилитель.</p>
+  `;
+
+  const max = Math.max(...Object.values(scores),1);
+  document.getElementById('scoresGrid').innerHTML = sorted.map(([k,v])=>`
+    <div class="mini"><h3>${labels[k]}</h3><div class="score">${Math.round((v/max)*100)}%</div></div>
+  `).join('');
+
+
+  const ranked = professions.map(p=>({...p,fit:professionFit(p)})).sort((a,b)=>b.fit-a.fit).slice(0,5);
+  document.getElementById('professionList').innerHTML = ranked.map((p,i)=>`
+    <article class="profession">
+      <div class="profession-top">
+        <div>
+          <h4>${i+1}. ${p.name}</h4>
+          <span class="tag ${outlookClass(p.outlook)}">Перспектива: ${p.outlook}</span>
+          <span class="tag ${riskClass(p.contraction)}">Риск сокращения: ${p.contraction}</span>
+        </div>
+        <span class="match">Совпадение ${p.fit}%</span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><strong>Влияние ИИ</strong>${p.aiImpact}</div>
+        <div class="metric"><strong>Устойчивость к автоматизации: ${p.resilience}/10</strong><div class="meter"><span style="width:${p.resilience*10}%"></span></div></div>
+      </div>
+      <p><strong>Что будет с рынком:</strong> ${p.market}</p>
+      <p><strong>Что изменит ИИ:</strong> ${p.ai}</p>
+      <p><strong>Можно ли быть конкурентоспособной:</strong> ${p.competitive}</p>
+      <p><strong>Что изучать:</strong> ${p.learn}</p>
+    </article>`).join('');
+
+  const combinedTry = [...new Set([...top.try, ...descriptions[secondKey].try.slice(0,2)])];
+  document.getElementById('tryList').innerHTML = combinedTry.map(x=>`<li>${x}</li>`).join('');
+
+  const monthExperiments = {
+    tech:[
+      'Собери небольшой работающий проект: модель, механизм, электронную схему или 3D-конструкцию.',
+      'Разбери принцип работы одного привычного устройства и нарисуй простую схему: из каких частей оно состоит.',
+      'В конце месяца выбери один проект, который хотелось бы улучшить, и сделай вторую версию.'
+    ],
+    analysis:[
+      'Попробуй сделать маленький проект в Scratch или Python: игру, викторину, калькулятор или простую автоматизацию.',
+      'Возьми интересную тему и собери 20–30 фактов или чисел, затем найди в них закономерности и сделай вывод.',
+      'Реши несколько логических задач разного типа и отметь, какие из них хочется разбирать даже после ошибки.'
+    ],
+    creative:[
+      'Создай законченный мини-проект: постер, короткое видео, иллюстрацию, 3D-сцену или дизайн приложения.',
+      'Возьми одну идею и сделай три совершенно разных варианта оформления, а затем выбери лучший и объясни почему.',
+      'Покажи работу нескольким людям, собери обратную связь и улучши её — как настоящий дизайнер.'
+    ],
+    people:[
+      'Подготовь и проведи небольшое интервью с человеком на интересную тебе тему, а затем кратко перескажи главное.',
+      'Попробуй объяснить кому-нибудь сложную тему простыми словами и посмотри, получилось ли сделать её понятной.',
+      'Поучаствуй в командном, волонтёрском или школьном проекте и отметь, какие задачи с людьми тебе нравятся больше всего.'
+    ],
+    science:[
+      'Выбери один вопрос о природе, человеке или веществах и сформулируй гипотезу: что ты ожидаешь увидеть и почему.',
+      'Проведи безопасное наблюдение или опыт, записывая результаты, а не только впечатления.',
+      'В конце месяца сделай одностраничный мини-отчёт: вопрос → гипотеза → наблюдения → вывод.'
+    ],
+    leadership:[
+      'Придумай маленький проект на 1–2 недели и сама составь план: цель, этапы, сроки и что понадобится.',
+      'Организуй небольшое семейное или школьное дело, где нужно договориться с несколькими людьми.',
+      'После завершения оцени: что получилось по плану, что сорвалось и что в следующий раз организовала бы иначе.'
+    ]
+  };
+  const plan = [monthExperiments[topKey][0], monthExperiments[secondKey][1], monthExperiments[topKey][2]];
+  document.getElementById('monthPlan').innerHTML = plan.map((x,i)=>`<li><strong>${i===0?'Неделя 1':i===1?'Недели 2–3':'Неделя 4'}:</strong> ${x}</li>`).join('');
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  startScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  showQuestion();
+});
+
+document.querySelectorAll('[data-answer]').forEach(btn=>btn.addEventListener('click',()=>{
+  const ans = btn.dataset.answer;
+  applyPoints(questions[current][ans]);
+  current++;
+  if(current >= questions.length) finish(); else showQuestion();
+}));
+
+document.getElementById('restartBtn').addEventListener('click',()=>{
+  current = 0;
+  scores = {tech:0,analysis:0,creative:0,people:0,science:0,leadership:0};
+  resultScreen.classList.add('hidden');
+  startScreen.classList.remove('hidden');
+  bar.style.width='0%';
+});
+</script>
+</body>
+</html>
